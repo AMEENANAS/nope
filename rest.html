@@ -1,0 +1,192 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+
+const AxiosFormExample = () => {
+  const [formData, setFormData] = useState({ name: '', email: '' });
+  const [deleteId, setDeleteId] = useState('');
+  const [updateData, setUpdateData] = useState({ id: '', name: '', email: '' });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleDeleteChange = (event) => {
+    setDeleteId(event.target.value);
+  };
+
+  const handleUpdateChange = (event) => {
+    const { name, value } = event.target;
+    setUpdateData({ ...updateData, [name]: value });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    axios.post('https://jsonplaceholder.typicode.com/users', formData)
+      .then(response => {
+        console.log('Form submitted successfully:', response.data);
+      })
+      .catch(error => {
+        console.error('There was an error submitting the form!', error);
+      });
+  };
+
+  const handleDelete = (event) => {
+    event.preventDefault();
+    axios.delete(https://jsonplaceholder.typicode.com/users/${deleteId})
+      .then(response => {
+        console.log('Deleted successfully:', response.data);
+      })
+      .catch(error => {
+        console.error('There was an error deleting the data!', error);
+      });
+  };
+
+  const handleUpdate = (event) => {
+    event.preventDefault();
+    const { id, name, email } = updateData;
+    axios.put(https://jsonplaceholder.typicode.com/users/${id}, { name, email })
+      .then(response => {
+        console.log('Updated successfully:', response.data);
+      })
+      .catch(error => {
+        console.error('There was an error updating the data!', error);
+      });
+  };
+
+  React.useEffect(() => {
+    axios.get('https://jsonplaceholder.typicode.com/users')
+      .then(response => {
+        console.log('Data fetched successfully:', response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the data!', error);
+      });
+  }, []);
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
+        <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
+        <button type="submit">Submit</button>
+      </form>
+
+      <form onSubmit={handleDelete}>
+        <input type="text" name="id" placeholder="ID to delete" value={deleteId} onChange={handleDeleteChange} required />
+        <button type="submit">Delete</button>
+      </form>
+
+      <form onSubmit={handleUpdate}>
+        <input type="text" name="id" placeholder="ID to update" value={updateData.id} onChange={handleUpdateChange} required />
+        <input type="text" name="name" placeholder="New Name" value={updateData.name} onChange={handleUpdateChange} required />
+        <input type="email" name="email" placeholder="New Email" value={updateData.email} onChange={handleUpdateChange} required />
+        <button type="submit">Update</button>
+      </form>
+    </div>
+  );
+};
+
+export default AxiosFormExample;
+
+javascript code 
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Axios Form Example</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <form id="myForm">
+    <input type="text" name="name" placeholder="Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <button type="submit">Submit</button>
+  </form>
+
+  <form id="deleteForm">
+    <input type="text" name="id" placeholder="ID to delete" required>
+    <button type="submit">Delete</button>
+  </form>
+
+  <form id="updateForm">
+    <input type="text" name="id" placeholder="ID to update" required>
+    <input type="text" name="name" placeholder="New Name" required>
+    <input type="email" name="email" placeholder="New Email" required>
+    <button type="submit">Update</button>
+  </form>
+
+  <script>
+    // Handling the submission of the form
+    document.getElementById('myForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email')
+      };
+
+      // POST request
+      axios.post('https://jsonplaceholder.typicode.com/users', data)
+        .then(response => {
+          console.log('Form submitted successfully:', response.data);
+        })
+        .catch(error => {
+          console.error('There was an error submitting the form!', error);
+        });
+    });
+
+    // Handling the deletion of data
+    document.getElementById('deleteForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+      const id = formData.get('id');
+
+      // DELETE request
+      axios.delete(https://jsonplaceholder.typicode.com/users/${id})
+        .then(response => {
+          console.log('Deleted successfully:', response.data);
+        })
+        .catch(error => {
+          console.error('There was an error deleting the data!', error);
+        });
+    });
+
+    // Handling the update of data
+    document.getElementById('updateForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+      const id = formData.get('id');
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email')
+      };
+
+      // PUT request
+      axios.put(https://jsonplaceholder.typicode.com/users/${id}, data)
+        .then(response => {
+          console.log('Updated successfully:', response.data);
+        })
+        .catch(error => {
+          console.error('There was an error updating the data!', error);
+        });
+    });
+
+    // GET request example
+    axios.get('https://jsonplaceholder.typicode.com/users')
+      .then(response => {
+        console.log('Data fetched successfully:', response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the data!', error);
+      });
+  </script>
+</body>
+</html>
